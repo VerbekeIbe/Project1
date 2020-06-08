@@ -83,7 +83,7 @@ if __name__ == "__main__":
         print("setup complete")
         #write_message("")
         send_instruction(0b11000000)
-        write_message("Travis scott is kinda pog")
+        write_message("FLY ON THE MIC BITCH")
         print("message 1 sent")
         
         # write_message("test")

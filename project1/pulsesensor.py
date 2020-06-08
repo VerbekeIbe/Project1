@@ -242,9 +242,9 @@ def knop_pressed(pin):
 
 
 threading.Timer(1, lees_potentio).start()
-threading.Timer(2, lees_thermistor).start()
-threading.Timer(1, lees_pulse).start()
-knop1.on_press(knop_pressed)
+# threading.Timer(2, lees_thermistor).start()
+# threading.Timer(1, lees_pulse).start()
+# knop1.on_press(knop_pressed)
 
 
 if __name__ == '__main__':
