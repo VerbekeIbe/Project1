@@ -143,11 +143,12 @@ def lees_pulse():
     lastBeatTime = 0        # used to find IBI
     P = 512                 # used to find peak in pulse wave, seeded
     T = 512                 # used to find trough in pulse wave, seeded
-    thresh = 700        # used to find instant moment of heart beat, seeded
+    thresh = 750        # used to find instant moment of heart beat, seeded
     amp = 100               # used to hold amplitude of pulse waveform, seeded
     firstBeat = True        # used to seed rate array so we startup with reasonable BPM
     secondBeat = False      # used to seed rate array so we startup with reasonable BPM
     old_BPM = 60
+    global BPM
     BPM = 60
    
 
@@ -213,7 +214,7 @@ def lees_pulse():
             T = thresh
 
         if N > 2500:                                # if 2.5 seconds go by without a beat
-            thresh = 700                        # set thresh default
+            thresh = 750                    # set thresh default
             P = 512                                 # set P default
             T = 512                                 # set T default
             lastBeatTime = sampleCounter            # bring the lastBeatTime up to date
@@ -235,18 +236,18 @@ def lees_pulse():
                 # time.sleep(4)
             elif new_BPM == old_BPM:
                     print("BPM ongewijzigd")
-                    time.sleep(2)
+                    time.sleep(0.5)
 
         time.sleep(0.005)
 
 
        
 def pick_song():
-    pass
+    print(f"Song Picking: De BPM waar ik nu mee aan het werk ga is: {BPM}")
+    middle = BPM
         
 def knop_pressed(pin):
-    print("Knop is goed ingedrukt")
-    print("Nu zou heel het algorithme moeten starten eigenlijk")
+    print("Knop is ingedrukt")
     pick_song()
     time.sleep(1) 
               
