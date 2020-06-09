@@ -6,6 +6,7 @@ from flask_cors import CORS
 
 import time
 import threading
+import display as display
 
 import spidev
 from helpers.klasseknop import Button
@@ -242,10 +243,22 @@ def knop_pressed(pin):
     time.sleep(1)            
 
 
-threading.Timer(1, lees_potentio).start()
+# threading.Timer(1, lees_potentio).start()
 # threading.Timer(2, lees_thermistor).start()
 # threading.Timer(1, lees_pulse).start()
 # knop1.on_press(knop_pressed)
+
+try:
+    display.setup()
+    print("Display setup complete")
+    #write_message("")
+    display.send_instruction(0b11000000)
+    display.write_message("169.254.10.1")
+    print("Display message completed")   
+            
+except KeyboardInterrupt as e:
+    print("quitting...")
+
 
 
 if __name__ == '__main__':

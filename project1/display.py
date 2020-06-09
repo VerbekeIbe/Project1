@@ -77,22 +77,22 @@ def set_cursor(row, col):
 def move_screen():
     send_instruction(0b00011000)
     
-if __name__ == "__main__":
-    try:
-        setup()
-        print("setup complete")
-        #write_message("")
-        send_instruction(0b11000000)
-        write_message("FLY ON THE MIC BITCH")
-        print("message 1 sent")
+# if __name__ == "__main__":
+#     try:
+#         setup()
+#         print("setup complete")
+#         #write_message("")
+#         send_instruction(0b11000000)
+#         write_message("FLY ON THE MIC BITCH")
+#         print("message 1 sent")
         
-        # write_message("test")
+#         # write_message("test")
 
-        #set_cursor(0, 0xF)
+#         #set_cursor(0, 0xF)
         
-        # j) Vraag een input van de gebruiker.
-        #message = input("Choose a string to display: ")
-        #write_message(message)
+#         # j) Vraag een input van de gebruiker.
+#         #message = input("Choose a string to display: ")
+#         #write_message(message)
             
-    except KeyboardInterrupt as e:
-        print("quitting...")
+#     except KeyboardInterrupt as e:
+#         print("quitting...")
