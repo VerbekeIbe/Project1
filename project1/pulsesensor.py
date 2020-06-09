@@ -45,6 +45,10 @@ knop1 = Button(17)
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
+# pulse sensor init
+
+
+
 class MCP:
     def __init__(self, bus=0, device=0):
         # spidev object initialiseren
@@ -84,8 +88,8 @@ def lees_potentio():
     old_volume = 0
     while True:
         new_volume = int(MCP().read_channel(0))
-        print(f"new volume: {new_volume}")
         if new_volume is not old_volume:
+            # print(f"new volume: {new_volume}")
             socketio.emit(
                 'B2F_volume', {'currentVolume': f"{new_volume}"}, broadcast=True)
             time_string = time.strftime("%Y-%m-%d %H:%M:%S")
@@ -94,7 +98,7 @@ def lees_potentio():
             deviceid_string = "Potentio"
             DataRepository.measure_device(
                 deviceid_string, new_volume, time_string)
-            print(time_string)
+            # print(time_string)
             old_volume = new_volume
             time.sleep(4)
         elif new_volume == old_volume:
@@ -111,9 +115,8 @@ def lees_thermistor():
         tkelvin = 1/(1/298.15+1/45700*math.log(rntc/10000))
         tcelsiusraw = tkelvin - 273.15
         tcelsius = int(tcelsiusraw)
-        print(f"temp in celsius: {tcelsius}")
         if tcelsius is not old_temp:
-            print(f"Temperatuur gewijzigd naar : {tcelsius}")
+            # print(f"Temperatuur gewijzigd naar : {tcelsius}")
             socketio.emit(
                 'B2F_temperature', {'currentTemperature': f"{tcelsius}"}, broadcast=True)
             time_string = time.strftime("%Y-%m-%d %H:%M:%S")
@@ -122,12 +125,11 @@ def lees_thermistor():
             deviceid_string = "Temp"
             DataRepository.measure_device(
                 deviceid_string, tcelsius, time_string)
-            print(time_string)
-            print("sockets zijn verstuurd")
+            # print(time_string)
             old_temp = tcelsius
             time.sleep(3)
         elif tcelsius == old_temp:
-            print("Temperatuur ongewijzigd")
+            # print("Temperatuur ongewijzigd")
             time.sleep(3)
 
 
@@ -141,11 +143,13 @@ def lees_pulse():
     lastBeatTime = 0        # used to find IBI
     P = 512                 # used to find peak in pulse wave, seeded
     T = 512                 # used to find trough in pulse wave, seeded
-    thresh = 725         # used to find instant moment of heart beat, seeded
+    thresh = 675         # used to find instant moment of heart beat, seeded
     amp = 100               # used to hold amplitude of pulse waveform, seeded
     firstBeat = True        # used to seed rate array so we startup with reasonable BPM
     secondBeat = False      # used to seed rate array so we startup with reasonable BPM
     old_BPM = 60
+    BPM = 60
+   
 
     IBI = 600               # int that holds the time interval between beats! Must be seeded!
     # "True" when User's live heartbeat is detected. "False" when not a "live beat".
@@ -209,31 +213,29 @@ def lees_pulse():
             T = thresh
 
         if N > 2500:                                # if 2.5 seconds go by without a beat
-            thresh = 750                            # set thresh default
+            thresh = 675                            # set thresh default
             P = 512                                 # set P default
             T = 512                                 # set T default
             lastBeatTime = sampleCounter            # bring the lastBeatTime up to date
             firstBeat = True                        # set these to avoid noise
             secondBeat = False                      # when we get the heartbeat back
             new_BPM = BPM
-            
-
-        if new_BPM is not old_BPM:
-            print(f"BPM is now set to: {new_BPM}")
-            socketio.emit(
-                'B2F_pulse', {'currentBPM': f"{new_BPM}"}, broadcast=True)
-            time_string = time.strftime("%Y-%m-%d %H:%M:%S")
-            socketio.emit(
-                    'B2F_pulse_time', {'currentTime': f"{time_string}"}, broadcast=True)
-            deviceid_string = "Pulse"
-            DataRepository.measure_device(
-                deviceid_string, new_BPM, time_string)
-            print(time_string)
-            old_BPM = new_BPM
-             # time.sleep(4)
-        elif new_BPM == old_BPM:
-                print("BPM ongewijzigd")
-                time.sleep(2)
+            if new_BPM is not old_BPM:
+                print(f"BPM is now set to: {new_BPM}")
+                socketio.emit(
+                    'B2F_pulse', {'currentBPM': f"{new_BPM}"}, broadcast=True)
+                time_string = time.strftime("%Y-%m-%d %H:%M:%S")
+                socketio.emit(
+                        'B2F_pulse_time', {'currentTime': f"{time_string}"}, broadcast=True)
+                deviceid_string = "Pulse"
+                DataRepository.measure_device(
+                    deviceid_string, new_BPM, time_string)
+                print(time_string)
+                old_BPM = new_BPM
+                # time.sleep(4)
+            elif new_BPM == old_BPM:
+                    print("BPM ongewijzigd")
+                    time.sleep(2)
 
         time.sleep(0.005)
         
@@ -243,10 +245,10 @@ def knop_pressed(pin):
     time.sleep(1)            
 
 
-# threading.Timer(1, lees_potentio).start()
-# threading.Timer(2, lees_thermistor).start()
-# threading.Timer(1, lees_pulse).start()
-# knop1.on_press(knop_pressed)
+threading.Timer(1, lees_potentio).start()
+threading.Timer(2, lees_thermistor).start()
+threading.Timer(1, lees_pulse).start()
+knop1.on_press(knop_pressed)
 
 try:
     display.setup()
@@ -255,7 +257,7 @@ try:
     display.send_instruction(0b11000000)
     display.write_message("169.254.10.1")
     print("Display message completed")   
-            
+
 except KeyboardInterrupt as e:
     print("quitting...")
 
