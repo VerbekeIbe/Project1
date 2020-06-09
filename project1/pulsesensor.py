@@ -122,6 +122,7 @@ def lees_thermistor():
             DataRepository.measure_device(
                 deviceid_string, tcelsius, time_string)
             print(time_string)
+            print("sockets zijn verstuurd")
             old_temp = tcelsius
             time.sleep(3)
         elif tcelsius == old_temp:
@@ -139,7 +140,7 @@ def lees_pulse():
     lastBeatTime = 0        # used to find IBI
     P = 512                 # used to find peak in pulse wave, seeded
     T = 512                 # used to find trough in pulse wave, seeded
-    thresh = 600         # used to find instant moment of heart beat, seeded
+    thresh = 725         # used to find instant moment of heart beat, seeded
     amp = 100               # used to hold amplitude of pulse waveform, seeded
     firstBeat = True        # used to seed rate array so we startup with reasonable BPM
     secondBeat = False      # used to seed rate array so we startup with reasonable BPM
@@ -207,7 +208,7 @@ def lees_pulse():
             T = thresh
 
         if N > 2500:                                # if 2.5 seconds go by without a beat
-            thresh = 600                            # set thresh default
+            thresh = 750                            # set thresh default
             P = 512                                 # set P default
             T = 512                                 # set T default
             lastBeatTime = sampleCounter            # bring the lastBeatTime up to date
@@ -216,20 +217,20 @@ def lees_pulse():
             new_BPM = BPM
             
 
-            if new_BPM is not old_BPM:
-                print(f"BPM is now set to: {new_BPM}")
-                socketio.emit(
-                    'B2F_pulse', {'currentBPM': f"{new_BPM}"}, broadcast=True)
-                time_string = time.strftime("%Y-%m-%d %H:%M:%S")
-                socketio.emit(
+        if new_BPM is not old_BPM:
+            print(f"BPM is now set to: {new_BPM}")
+            socketio.emit(
+                'B2F_pulse', {'currentBPM': f"{new_BPM}"}, broadcast=True)
+            time_string = time.strftime("%Y-%m-%d %H:%M:%S")
+            socketio.emit(
                     'B2F_pulse_time', {'currentTime': f"{time_string}"}, broadcast=True)
-                deviceid_string = "Pulse"
-                DataRepository.measure_device(
-                    deviceid_string, new_BPM, time_string)
-                print(time_string)
-                old_BPM = new_BPM
-                # time.sleep(4)
-            elif new_BPM == old_BPM:
+            deviceid_string = "Pulse"
+            DataRepository.measure_device(
+                deviceid_string, new_BPM, time_string)
+            print(time_string)
+            old_BPM = new_BPM
+             # time.sleep(4)
+        elif new_BPM == old_BPM:
                 print("BPM ongewijzigd")
                 time.sleep(2)
 
