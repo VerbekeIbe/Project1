@@ -102,7 +102,7 @@ def lees_potentio():
             old_volume = new_volume
             time.sleep(4)
         elif new_volume == old_volume:
-            print("volume ongewijzigd")
+            # print("volume ongewijzigd")
             time.sleep(2)
 
 
@@ -138,12 +138,12 @@ def lees_thermistor():
 def lees_pulse():
     print("Reading Pulse")
     # init variables
-    rate = [0] * 8         # array to hold last 10 IBI values
+    rate = [0] * 10         # array to hold last 7 IBI values
     sampleCounter = 0       # used to determine pulse timing
     lastBeatTime = 0        # used to find IBI
     P = 512                 # used to find peak in pulse wave, seeded
     T = 512                 # used to find trough in pulse wave, seeded
-    thresh = 675         # used to find instant moment of heart beat, seeded
+    thresh = 700        # used to find instant moment of heart beat, seeded
     amp = 100               # used to hold amplitude of pulse waveform, seeded
     firstBeat = True        # used to seed rate array so we startup with reasonable BPM
     secondBeat = False      # used to seed rate array so we startup with reasonable BPM
@@ -213,7 +213,7 @@ def lees_pulse():
             T = thresh
 
         if N > 2500:                                # if 2.5 seconds go by without a beat
-            thresh = 675                            # set thresh default
+            thresh = 700                        # set thresh default
             P = 512                                 # set P default
             T = 512                                 # set T default
             lastBeatTime = sampleCounter            # bring the lastBeatTime up to date
@@ -241,13 +241,18 @@ def lees_pulse():
         
         
 def knop_pressed(pin):
-    print("Knop is ingedrukt")
-    time.sleep(1)            
+    print("Knop is goed ingedrukt")
+    time.sleep(1)  
+    print("Nu zou heel het algorithme moeten starten eigenlijk")
+              
 
 
 threading.Timer(1, lees_potentio).start()
 threading.Timer(2, lees_thermistor).start()
 threading.Timer(1, lees_pulse).start()
+
+
+
 knop1.on_press(knop_pressed)
 
 try:
