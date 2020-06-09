@@ -238,12 +238,17 @@ def lees_pulse():
                     time.sleep(2)
 
         time.sleep(0.005)
-        
+
+
+       
+def pick_song():
+    pass
         
 def knop_pressed(pin):
     print("Knop is goed ingedrukt")
-    time.sleep(1)  
     print("Nu zou heel het algorithme moeten starten eigenlijk")
+    pick_song()
+    time.sleep(1) 
               
 
 
