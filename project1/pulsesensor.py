@@ -50,8 +50,10 @@ GPIO.setmode(GPIO.BCM)
 # song playing init
 global playing
 playing = False
+print(f"playing: {playing}")
 print("Playing init complete")
 global player
+player = ""
 
 
 class MCP:
@@ -282,9 +284,7 @@ def pick_song():
 
 
 def knop_pressed(pin):
-    if playing == True:
-        player.stop()
-        playing = False
+
     print("Knop is ingedrukt")
     pick_song()
     time.sleep(1) 
