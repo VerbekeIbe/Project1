@@ -114,6 +114,7 @@ def lees_thermistor():
         rntc = 10000/((1023/new_temp)-1)
         tkelvin = 1/(1/298.15+1/45700*math.log(rntc/10000))
         tcelsiusraw = tkelvin - 273.15
+        global tcelsius
         tcelsius = int(tcelsiusraw)
         if tcelsius is not old_temp:
             # print(f"Temperatuur gewijzigd naar : {tcelsius}")
@@ -235,7 +236,7 @@ def lees_pulse():
                 old_BPM = new_BPM
                 # time.sleep(4)
             elif new_BPM == old_BPM:
-                    print("BPM ongewijzigd")
+                    # print("BPM ongewijzigd")
                     time.sleep(0.5)
 
         time.sleep(0.005)
@@ -243,8 +244,26 @@ def lees_pulse():
 
        
 def pick_song():
-    print(f"Song Picking: De BPM waar ik nu mee aan het werk ga is: {BPM}")
-    middle = BPM
+    print(f"Song Picking: BPM: {BPM}, temperatuur: {tcelsius}")
+
+    if tcelsius <= 26:
+        ondergrens = 0
+        bovengrens = BPM
+        print(f"cold boi: ondergrens: {ondergrens}, bovengrens: {bovengrens}")
+        song_list = DataRepository.get_songs(ondergrens, bovengrens)
+        jsonify(songs=song_list)
+        print(f"songs: {song_list}")
+    else:
+        ondergrens = BPM
+        bovengrens = 1000
+        print(f"Hot boi: ondergrens: {ondergrens}, bovengrens: {bovengrens}")
+        song_list = DataRepository.get_songs(ondergrens, bovengrens)
+        jsonify(songs=song_list)
+        print(f"songs: {song_list}")
+
+
+    
+    
         
 def knop_pressed(pin):
     print("Knop is ingedrukt")

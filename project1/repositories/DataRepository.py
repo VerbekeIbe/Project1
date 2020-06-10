@@ -44,3 +44,9 @@ class DataRepository:
         sql = "INSERT INTO meetwaarden (DeviceId, Waarde, Datum) VALUES(%s,%s,%s)"
         params = [DeviceId, waarde, datetime]
         return Database.execute_sql(sql, params)
+
+    @staticmethod
+    def get_songs(ondergrens, bovengrens):
+        sql = "SELECT Titel FROM muziek WHERE Tempo >= (%s) AND Tempo <= (%s);"
+        params = [ondergrens, bovengrens]
+        return Database.execute_sql(sql, params)
