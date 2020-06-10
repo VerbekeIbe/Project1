@@ -245,18 +245,17 @@ def lees_pulse():
        
 def pick_song():
     print(f"Song Picking: BPM: {BPM}, temperatuur: {tcelsius}")
-
     if tcelsius <= 26:
-        ondergrens = 0
+        ondergrens = BPM + ((tcelsius - 26)*10)
         bovengrens = BPM
-        print(f"cold boi: ondergrens: {ondergrens}, bovengrens: {bovengrens}")
+        print(f"cold boi: ondergrens: {ondergrens}, bovengrens: {bovengrens}, temp: {tcelsius}")
         song_list = DataRepository.get_songs(ondergrens, bovengrens)
         jsonify(songs=song_list)
         print(f"songs: {song_list}")
     else:
         ondergrens = BPM
-        bovengrens = 1000
-        print(f"Hot boi: ondergrens: {ondergrens}, bovengrens: {bovengrens}")
+        bovengrens = BPM + ((tcelsius - 26)*10)
+        print(f"Hot boi: ondergrens: {ondergrens}, bovengrens: {bovengrens}, temp: {tcelsius}")
         song_list = DataRepository.get_songs(ondergrens, bovengrens)
         jsonify(songs=song_list)
         print(f"songs: {song_list}")
