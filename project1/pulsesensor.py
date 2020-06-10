@@ -244,7 +244,8 @@ def lees_pulse():
         time.sleep(0.005)
 
 
-def play_song():
+def play_song(choice):
+    # print(choice)
     pass
 
       
@@ -263,15 +264,15 @@ def pick_song():
     song_list = DataRepository.get_songs(ondergrens, bovengrens)
     print("songs opgehaald")
     print(song_list)
-    print(len(song_list))
-    choice = random.randint(0, (len(song_list)-1))
-    print(choice)
-    print(f"choice: {song_list[choice]}")
-    play_song()
+    pick = random.randint(0, (len(song_list)-1))
+    print(f"choice: {song_list[pick]}")
+    choice = song_list[pick]
+    play_song(choice)
    
 
 
-   
+
+
 def knop_pressed(pin):
     print("Knop is ingedrukt")
     pick_song()
