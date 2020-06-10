@@ -248,28 +248,23 @@ def pick_song():
     if tcelsius <= 26:
         ondergrens = BPM + ((tcelsius - 26)*10)
         bovengrens = BPM
-        print(f"cold boi: ondergrens: {ondergrens}, bovengrens: {bovengrens}, temp: {tcelsius}")
+        print(f"Koud: ondergrens: {ondergrens}, bovengrens: {bovengrens}, temp: {tcelsius}")
         song_list = DataRepository.get_songs(ondergrens, bovengrens)
         jsonify(songs=song_list)
         print(f"songs: {song_list}")
     else:
         ondergrens = BPM
         bovengrens = BPM + ((tcelsius - 26)*10)
-        print(f"Hot boi: ondergrens: {ondergrens}, bovengrens: {bovengrens}, temp: {tcelsius}")
+        print(f"Warm: ondergrens: {ondergrens}, bovengrens: {bovengrens}, temp: {tcelsius}")
         song_list = DataRepository.get_songs(ondergrens, bovengrens)
         jsonify(songs=song_list)
         print(f"songs: {song_list}")
-
-
-    
-    
-        
+   
 def knop_pressed(pin):
     print("Knop is ingedrukt")
     pick_song()
     time.sleep(1) 
               
-
 
 threading.Timer(1, lees_potentio).start()
 threading.Timer(2, lees_thermistor).start()
