@@ -13,6 +13,7 @@ from helpers.klasseknop import Button
 from RPi import GPIO
 import math
 import random
+import vlc
 
 
 
@@ -46,8 +47,11 @@ knop1 = Button(17)
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
-# pulse sensor init
-
+# song playing init
+global playing
+playing = False
+print("Playing init complete")
+global player
 
 
 class MCP:
@@ -245,12 +249,16 @@ def lees_pulse():
 
 
 def play_song(choice):
-    # print(choice)
-    pass
+    print(f"choice of to play song: {choice}")
+    title_string = choice["Titel"]
+    path_string = f"/home/pi/Music/{title_string}.mp3"
+    print(f"path string: {path_string}")
+    player = vlc.MediaPlayer(f"{path_string}")
+    player.play()
+    playing = True
 
       
 def pick_song():
-
     print(f"Song Picking: BPM: {search_BPM}, temperatuur: {tcelsius}")
     if tcelsius <= 26:
         ondergrens = search_BPM + ((tcelsius - 26)*10)
@@ -274,6 +282,9 @@ def pick_song():
 
 
 def knop_pressed(pin):
+    if playing == True:
+        player.stop()
+        playing = False
     print("Knop is ingedrukt")
     pick_song()
     time.sleep(1) 
