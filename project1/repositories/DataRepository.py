@@ -47,6 +47,7 @@ class DataRepository:
 
     @staticmethod
     def get_songs(ondergrens, bovengrens):
-        sql = "SELECT Titel FROM muziek WHERE Tempo >= (%s) AND Tempo <= (%s);"
+        sql = "SELECT Titel FROM HeartBeatsdb.muziek WHERE Tempo >= (%s) AND Tempo <= (%s);"
         params = [ondergrens, bovengrens]
-        return Database.execute_sql(sql, params)
+        print(sql)
+        return Database.get_rows(sql, params)

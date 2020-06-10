@@ -245,42 +245,24 @@ def lees_pulse():
 
        
 def pick_song():
+    search_BPM = 85
     print(f"Song Picking: BPM: {search_BPM}, temperatuur: {tcelsius}")
     if tcelsius <= 26:
         ondergrens = search_BPM + ((tcelsius - 26)*10)
         bovengrens = search_BPM
         print(f"Koud: ondergrens: {ondergrens}, bovengrens: {bovengrens}, temp: {tcelsius}")
         song_list = DataRepository.get_songs(ondergrens, bovengrens)
-        jsonify(songs=song_list)
+        print(song_list)
+        print("songs opgehaald")
         print(f"songs: {song_list}")
     else:
         ondergrens = search_BPM
         bovengrens = search_BPM + ((tcelsius - 26)*10)
         print(f"Warm: ondergrens: {ondergrens}, bovengrens: {bovengrens}, temp: {tcelsius}")
         song_list = DataRepository.get_songs(ondergrens, bovengrens)
-        jsonify(songs=song_list)
-        print(f"songs: {song_list}")
-        
-
-# Knop is ingedrukt
-# Song Picking: BPM: 85, temperatuur: 28
-# Warm: ondergrens: 85, bovengrens: 105, temp: 28
-# Traceback (most recent call last):
-#   File "/home/pi/Project1 git/project1/pulsesensor.py", line 266, in knop_pressed
-#     pick_song()
-#   File "/home/pi/Project1 git/project1/pulsesensor.py", line 261, in pick_song
-#     jsonify(songs=song_list)
-#   File "/usr/lib/python3/dist-packages/flask/json/__init__.py", line 309, in jsonify
-#     if current_app.config['JSONIFY_PRETTYPRINT_REGULAR'] or current_app.debug:
-#   File "/usr/lib/python3/dist-packages/werkzeug/local.py", line 347, in __getattr__
-#     return getattr(self._get_current_object(), name)
-#   File "/usr/lib/python3/dist-packages/werkzeug/local.py", line 306, in _get_current_object
-#     return self.__local()
-#   File "/usr/lib/python3/dist-packages/flask/globals.py", line 51, in _find_app
-#     raise RuntimeError(_app_ctx_err_msg)
-# RuntimeError: Working outside of application context.
-
-
+        print("songs opgehaald")
+        print(song_list)
+        print(song_list[2])
 
    
 def knop_pressed(pin):
