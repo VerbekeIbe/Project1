@@ -12,6 +12,7 @@ import spidev
 from helpers.klasseknop import Button
 from RPi import GPIO
 import math
+import random
 
 
 
@@ -243,26 +244,32 @@ def lees_pulse():
         time.sleep(0.005)
 
 
-       
+def play_song():
+    pass
+
+      
 def pick_song():
-    search_BPM = 85
+
     print(f"Song Picking: BPM: {search_BPM}, temperatuur: {tcelsius}")
     if tcelsius <= 26:
         ondergrens = search_BPM + ((tcelsius - 26)*10)
         bovengrens = search_BPM
         print(f"Koud: ondergrens: {ondergrens}, bovengrens: {bovengrens}, temp: {tcelsius}")
-        song_list = DataRepository.get_songs(ondergrens, bovengrens)
-        print(song_list)
-        print("songs opgehaald")
-        print(f"songs: {song_list}")
     else:
         ondergrens = search_BPM
         bovengrens = search_BPM + ((tcelsius - 26)*10)
         print(f"Warm: ondergrens: {ondergrens}, bovengrens: {bovengrens}, temp: {tcelsius}")
-        song_list = DataRepository.get_songs(ondergrens, bovengrens)
-        print("songs opgehaald")
-        print(song_list)
-        print(song_list[2])
+        
+    song_list = DataRepository.get_songs(ondergrens, bovengrens)
+    print("songs opgehaald")
+    print(song_list)
+    print(len(song_list))
+    choice = random.randint(0, (len(song_list)-1))
+    print(choice)
+    print(f"choice: {song_list[choice]}")
+    play_song()
+   
+
 
    
 def knop_pressed(pin):
